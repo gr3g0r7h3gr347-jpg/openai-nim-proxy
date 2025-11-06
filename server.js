@@ -26,7 +26,7 @@ const MODEL_MAPPING = {
   // Model Selection (adjust based on available NIM models)
   'deepseek-v3.1-terminus': 'deepseek-ai/deepseek-v3.1-terminus', // DeepSeek V3.1 Terminus
   'deepseek-r1-0528': 'deepseek-ai/deepseek-r1-0528',           // DeepSeek R1 (reasoning model)
-  'qwen3-next-80b-a3b-thinking': 'qwen/qwen3-next-80b-a3b-thinking'
+  'qwen3-next-80b-a3b-thinking': 'qwen/qwen3-next-80b-a3b-thinking',
   'kimi-k2-instruct-0905': 'moonshotai/kimi-k2-instruct-0905',
   'llama-3.1-nemotron-ultra-253b-v1': 'nvidia/llama-3.1-nemotron-ultra-253b-v1',
 };
