@@ -15,7 +15,7 @@ const NIM_API_BASE = process.env.NIM_API_BASE || 'https://integrate.api.nvidia.c
 const NIM_API_KEY = process.env.NIM_API_KEY;
 
 // 🔥 REASONING DISPLAY TOGGLE - Shows/hides reasoning in output
-const SHOW_REASONING = false; // Set to true to show reasoning with <think> tags
+const SHOW_REASONING = true; // Set to true to show reasoning with <think> tags
 
 // 🔥 THINKING MODE TOGGLE - Enables thinking for specific models that support it
 const ENABLE_THINKING_MODE = false; // Set to true to enable chat_template_kwargs thinking parameter
@@ -23,32 +23,12 @@ const ENABLE_THINKING_MODE = false; // Set to true to enable chat_template_kwarg
 // 🎯 ENHANCED MODEL MAPPING with DeepSeek models
 // You can customize these mappings or add your own!
 const MODEL_MAPPING = {
-  // Fast models (good for quick responses)
-  'gpt-3.5-turbo': 'meta/llama-3.1-8b-instruct',
-  
-  // Balanced models (good all-rounders)
-  'gpt-4': 'meta/llama-3.1-70b-instruct',
-  'gpt-4-turbo': 'meta/llama-3.1-70b-instruct',
-  'claude-3-sonnet': 'meta/llama-3.1-70b-instruct',
-  'gemini-pro': 'meta/llama-3.1-70b-instruct',
-  
-  // Most powerful models
-  'gpt-4o': 'deepseek-ai/deepseek-v3.1',                    // DeepSeek V3.1 (default)
-  'claude-3-opus': 'meta/llama-3.1-405b-instruct',
-  
-  // 🆕 DeepSeek-specific mappings (add these to Janitor AI as custom models)
-  'deepseek-v3': 'deepseek-ai/deepseek-v3',                 // DeepSeek V3
-  'deepseek-v3.1': 'deepseek-ai/deepseek-v3.1',            // DeepSeek V3.1
+  // Model Selection (adjust based on available NIM models)
   'deepseek-v3.1-terminus': 'deepseek-ai/deepseek-v3.1-terminus', // DeepSeek V3.1 Terminus
-  'deepseek-r1': 'deepseek-ai/deepseek-r1-0528',           // DeepSeek R1 (reasoning model)
-  'deepseek-r1-distill-llama': 'deepseek-ai/deepseek-r1-distill-llama-70b', // Distilled version
-  'deepseek-coder': 'deepseek-ai/deepseek-coder-v3-8b-instruct', // Coding specialist
-  
-  // Other powerful models you might want
-  'qwen-480b': 'qwen/qwen3-coder-480b-a35b-instruct',
-  'llama-405b': 'meta/llama-3.1-405b-instruct',
-  'llama-70b': 'meta/llama-3.1-70b-instruct',
-  'llama-8b': 'meta/llama-3.1-8b-instruct',
+  'deepseek-r1-0528': 'deepseek-ai/deepseek-r1-0528',           // DeepSeek R1 (reasoning model)
+  'qwen3-next-80b-a3b-thinking': 'qwen/qwen3-next-80b-a3b-thinking'
+  'kimi-k2-instruct-0905': 'moonshotai/kimi-k2-instruct-0905',
+  'llama-3.1-nemotron-ultra-253b-v1': 'nvidia/llama-3.1-nemotron-ultra-253b-v1',
 };
 
 // Startup check
@@ -135,7 +115,7 @@ app.post('/v1/chat/completions', async (req, res) => {
       model: nimModel,
       messages: messages,
       temperature: temperature || 0.7,
-      max_tokens: max_tokens || 1024,
+      max_tokens: max_tokens || 9024,
       stream: stream || false
     };
     
