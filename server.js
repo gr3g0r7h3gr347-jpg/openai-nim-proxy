@@ -24,11 +24,11 @@ const ENABLE_THINKING_MODE = false; // Set to true to enable chat_template_kwarg
 // You can customize these mappings or add your own!
 const MODEL_MAPPING = {
   // Model Selection (adjust based on available NIM models)
-  'deepseek-v3.1-terminus': 'deepseek-ai/deepseek-v3.1-terminus', // DeepSeek V3.1 Terminus
+  'deepseek-v3.2': 'deepseek-ai/deepseek-v3.2', 
   'deepseek-r1-0528': 'deepseek-ai/deepseek-r1-0528',           // DeepSeek R1 (reasoning model)
   'qwen3-next-80b-a3b-thinking': 'qwen/qwen3-next-80b-a3b-thinking',
-  'kimi-k2-instruct-0905': 'moonshotai/kimi-k2-instruct-0905',
-  'llama-3.1-nemotron-ultra-253b-v1': 'nvidia/llama-3.1-nemotron-ultra-253b-v1',
+  'kimi-k2.5': 'moonshotai/kimi-k2.5',
+  'glm-4.7': 'z-ai/glm-4.7',
 };
 
 // Startup check
