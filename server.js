@@ -18,13 +18,13 @@ const NIM_API_KEY = process.env.NIM_API_KEY;
 const SHOW_REASONING = true; // Set to true to show reasoning with <think> tags
 
 // 🔥 THINKING MODE TOGGLE - Enables thinking for specific models that support it
-const ENABLE_THINKING_MODE = false; // Set to true to enable chat_template_kwargs thinking parameter
+const ENABLE_THINKING_MODE = true; // Set to true to enable chat_template_kwargs thinking parameter
 
 // 🎯 ENHANCED MODEL MAPPING with DeepSeek models
 // You can customize these mappings or add your own!
 const MODEL_MAPPING = {
   // Model Selection (adjust based on available NIM models)
-  'deepseek-v3.2': 'deepseek-ai/deepseek-v3.2', 
+  'deepseek-v3.1': 'deepseek-ai/deepseek-v3.1', 
   'deepseek-r1-0528': 'deepseek-ai/deepseek-r1-0528',           // DeepSeek R1 (reasoning model)
   'qwen3-next-80b-a3b-thinking': 'qwen/qwen3-next-80b-a3b-thinking',
   'kimi-k2.5': 'moonshotai/kimi-k2.5',
