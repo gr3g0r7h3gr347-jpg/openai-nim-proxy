@@ -15,23 +15,28 @@ const NIM_API_BASE = process.env.NIM_API_BASE || 'https://integrate.api.nvidia.c
 const NIM_API_KEY = process.env.NIM_API_KEY;
 
 // 🔥 REASONING DISPLAY TOGGLE - Shows/hides reasoning in output
-const SHOW_REASONING = true; // Set to true to show reasoning with <think> tags
+const SHOW_REASONING = false; // Set to true to show reasoning with <think> tags
 
 // 🔥 THINKING MODE TOGGLE - Enables thinking for specific models that support it
-const ENABLE_THINKING_MODE = true; // Set to true to enable chat_template_kwargs thinking parameter
+const ENABLE_THINKING_MODE = false; // Set to true to enable chat_template_kwargs thinking parameter
 
 // 🎯 ENHANCED MODEL MAPPING with DeepSeek models
 // You can customize these mappings or add your own!
 const MODEL_MAPPING = {
-  // Model Selection (adjust based on available NIM models)
+  // 🆕 Direct NVIDIA model access (use these exact names in Janitor AI)
   'deepseek-v3.1': 'deepseek-ai/deepseek-v3.1', 
   'deepseek-v3.2': 'deepseek-ai/deepseek-v3.2',
-  'deepseek-r1-0528': 'deepseek-ai/deepseek-r1-0528',           // DeepSeek R1 (reasoning model)
-  'qwen3-next-80b-a3b-thinking': 'qwen/qwen3-next-80b-a3b-thinking',
-  'qwen3.5-397b-a17b': 'qwen/qwen3.5-397b-a17b',
+  'deepseek-r1': 'deepseek-ai/deepseek-r1-0528',
+  'qwen3-next-80b': 'qwen/qwen3-next-80b-a3b-thinking',
+  'qwen3.5-397b': 'qwen/qwen3.5-397b-a17b',
   'step-3.5-flash': 'stepfun/step-3.5-flash',
   'kimi-k2.5': 'moonshotai/kimi-k2.5',
   'glm-4.7': 'zai-org/glm-4.7',
+  
+  // Meta Llama models (for fallback)
+  'llama-8b': 'meta/llama-3.1-8b-instruct',
+  'llama-70b': 'meta/llama-3.1-70b-instruct',
+  'llama-405b': 'meta/llama-3.1-405b-instruct',
 };
 
 // Startup check
@@ -118,7 +123,7 @@ app.post('/v1/chat/completions', async (req, res) => {
       model: nimModel,
       messages: messages,
       temperature: temperature || 0.7,
-      max_tokens: max_tokens || 9024,
+      max_tokens: max_tokens || 1024,
       stream: stream || false
     };
     
