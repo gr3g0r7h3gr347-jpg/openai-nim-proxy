@@ -25,8 +25,10 @@ const ENABLE_THINKING_MODE = true; // Set to true to enable chat_template_kwargs
 const MODEL_MAPPING = {
   // Model Selection (adjust based on available NIM models)
   'deepseek-v3.1': 'deepseek-ai/deepseek-v3.1', 
+  'deepseek-v3.2': 'deepseek-ai/deepseek-v3.2',
   'deepseek-r1-0528': 'deepseek-ai/deepseek-r1-0528',           // DeepSeek R1 (reasoning model)
   'qwen3-next-80b-a3b-thinking': 'qwen/qwen3-next-80b-a3b-thinking',
+  'qwen3.5-122B-A10B': 'qwen/qwen3.5-122B-A10B',
   'kimi-k2.5': 'moonshotai/kimi-k2.5',
   'glm-4.7': 'zai-org/glm-4.7',
 };
