@@ -28,7 +28,7 @@ const MODEL_MAPPING = {
   'deepseek-v3.2': 'deepseek-ai/deepseek-v3.2',
   'deepseek-r1-0528': 'deepseek-ai/deepseek-r1-0528',           // DeepSeek R1 (reasoning model)
   'qwen3-next-80b-a3b-thinking': 'qwen/qwen3-next-80b-a3b-thinking',
-  'qwen3.5-122B-A10B': 'qwen/qwen3.5-122B-A10B',
+  'qwen3.5-397b-a17b': 'qwen/qwen3.5-397b-a17b',
   'step-3.5-flash': 'stepfun/step-3.5-flash',
   'kimi-k2.5': 'moonshotai/kimi-k2.5',
   'glm-4.7': 'zai-org/glm-4.7',
