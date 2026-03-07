@@ -31,7 +31,7 @@ const MODEL_MAPPING = {
   'qwen3.5-397b': 'qwen/qwen3.5-397b-a17b',
   'step-3.5-flash': 'stepfun/step-3.5-flash',
   'kimi-k2.5': 'moonshotai/kimi-k2.5',
-  'glm-4.7': 'zai-org/glm-4.7',
+  'glm-5': 'zai-org/glm-5',
   
   // Meta Llama models (for fallback)
   'llama-8b': 'meta/llama-3.1-8b-instruct',
