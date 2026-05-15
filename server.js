@@ -24,14 +24,14 @@ const ENABLE_THINKING_MODE = false; // Set to true to enable chat_template_kwarg
 // You can customize these mappings or add your own!
 const MODEL_MAPPING = {
   // 🆕 Direct NVIDIA model access (use these exact names in Janitor AI)
-  'deepseek-v3.1': 'deepseek-ai/deepseek-v4-pro', 
+  'deepseek-v4-pro': 'deepseek-ai/deepseek-v4-pro', 
   'deepseek-v3.2': 'deepseek-ai/deepseek-v3.2',
   'deepseek-r1': 'deepseek-ai/deepseek-r1-0528',
   'qwen3-next-80b': 'qwen/qwen3-next-80b-a3b-thinking',
   'qwen3.5-397b': 'qwen/qwen3.5-397b-a17b',
   'step-3.5-flash': 'stepfun/step-3.5-flash',
-  'kimi-k2.5': 'moonshotai/kimi-k2.6',
-  'glm-5': 'zai-org/glm-5.1',
+  'kimi-k2.6': 'moonshotai/kimi-k2.6',
+  'glm-5.1': 'zai-org/glm-5.1',
   
   // Meta Llama models (for fallback)
   'llama-8b': 'meta/llama-3.1-8b-instruct',
