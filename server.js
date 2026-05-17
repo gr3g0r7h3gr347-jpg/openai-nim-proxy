@@ -1,4 +1,3 @@
-// server.js - OpenAI to NVIDIA NIM API Proxy (Enhanced with DeepSeek Models)
 const express = require('express');
 const cors = require('cors');
 const axios = require('axios');
@@ -6,43 +5,33 @@ const axios = require('axios');
 const app = express();
 const PORT = process.env.PORT || 10000;
 
-// Middleware
 app.use(cors());
 app.use(express.json());
 
-// NVIDIA NIM API configuration
 const NIM_API_BASE = process.env.NIM_API_BASE || 'https://integrate.api.nvidia.com/v1';
 const NIM_API_KEY = process.env.NIM_API_KEY;
 
-// 🔥 REASONING DISPLAY TOGGLE - Shows/hides reasoning in output
-const SHOW_REASONING = false; // Set to true to show reasoning with <think> tags
-
-// 🔥 THINKING MODE TOGGLE - Enables thinking for specific models that support it
-const ENABLE_THINKING_MODE = false; // Set to true to enable chat_template_kwargs thinking parameter
+const SHOW_REASONING = true;
+const ENABLE_THINKING_MODE = true;
 
 const MODEL_MAPPING = {
-  // ✅ Working DeepSeek V4 models
-  'deepseek-v4-flash': 'deepseek-ai/deepseek-v4-flash',     // Fast & efficient
-  // NOTE: V4 Pro has reported issues, use with caution:
-  'deepseek-v4-pro': 'deepseek-ai/deepseek-v4-pro',         // May have server errors
-  'kimi-k2.6': 'moonshotai/kimi-k2.6',                      // Latest multimodal agentic
-  'glm-5.1': 'z-ai/glm5.1',                                 // Flagship for agentic workflows
-  'gemma-4-31b': 'google/gemma-4-31b-it',                   // Multimodal reasoning, 256K context
+  'deepseek-v4-flash': 'deepseek-ai/deepseek-v4-flash',
+  'deepseek-v4-pro': 'deepseek-ai/deepseek-v4-pro',
+  'kimi-k2.6': 'moonshotai/kimi-k2.6',
+  'glm-5.1': 'z-ai/glm5.1',
+  'gemma-4-31b': 'google/gemma-4-31b-it',
   'qwen3-next-80b': 'qwen/qwen3-next-80b-a3b-thinking',
   'qwen3.5-397b': 'qwen/qwen3.5-397b-a17b',
-  'step-3.5-flash': 'stepfun/step-3.5-flash',
+  'step-3.5-flash': 'stepfun-ai/step-3.5-flash',
 };
 
-// Startup check
 if (!NIM_API_KEY) {
   console.error('⚠️  WARNING: NIM_API_KEY environment variable is not set!');
-  console.error('Please set it in your Render dashboard under Environment variables');
 } else {
   console.log('✅ NIM_API_KEY is configured');
   console.log(`Key preview: ${NIM_API_KEY.substring(0, 10)}...`);
 }
 
-// Health check endpoint with model listing
 app.get('/', (req, res) => {
   res.json({ 
     status: 'ok', 
@@ -67,7 +56,6 @@ app.get('/health', (req, res) => {
   });
 });
 
-// List models endpoint (OpenAI compatible)
 app.get('/v1/models', (req, res) => {
   const models = Object.keys(MODEL_MAPPING).map(model => ({
     id: model,
@@ -83,10 +71,8 @@ app.get('/v1/models', (req, res) => {
   });
 });
 
-// Chat completions endpoint (main proxy)
 app.post('/v1/chat/completions', async (req, res) => {
   try {
-    // Check if API key is configured
     if (!NIM_API_KEY) {
       console.error('❌ API call failed: NIM_API_KEY not configured');
       return res.status(500).json({
@@ -102,28 +88,25 @@ app.post('/v1/chat/completions', async (req, res) => {
     
     console.log(`📥 Incoming request for model: ${model}`);
     
-    // Check if model is in mapping, otherwise try to use it directly
     let nimModel = MODEL_MAPPING[model];
     
     if (!nimModel) {
       console.log(`⚠️  Model "${model}" not in mapping, trying to use directly...`);
-      nimModel = model; // Try using the requested model name directly
+      nimModel = model;
     }
     
     console.log(`🔄 Using NVIDIA model: ${nimModel}`);
     
-    // Transform OpenAI request to NIM format
     const nimRequest = {
       model: nimModel,
       messages: messages,
       temperature: temperature || 0.7,
-      max_tokens: max_tokens || 1024,
+      max_tokens: max_tokens || 9024,
       stream: stream || false
     };
     
     console.log(`📤 Sending request to NVIDIA API...`);
     
-    // Make request to NVIDIA NIM API
     const response = await axios.post(`${NIM_API_BASE}/chat/completions`, nimRequest, {
       headers: {
         'Authorization': `Bearer ${NIM_API_KEY}`,
@@ -131,28 +114,26 @@ app.post('/v1/chat/completions', async (req, res) => {
       },
       responseType: stream ? 'stream' : 'json',
       validateStatus: function (status) {
-        return status < 500; // Don't throw on 4xx errors
+        return status < 500;
       }
     });
     
-    // Log the response status
     console.log(`📨 NVIDIA API response status: ${response.status}`);
     
-    // Handle error responses
     if (response.status !== 200) {
       console.error(`❌ NVIDIA API error: ${response.status}`);
-      console.error(`Error details:`, response.data);
+      console.error(`Error details:`, JSON.stringify(response.data));
       
       let errorMessage = 'Unknown error from NVIDIA API';
       
       if (response.status === 403) {
-        errorMessage = 'NVIDIA API Key is invalid or expired. Please check your NIM_API_KEY in Render environment variables.';
+        errorMessage = 'NVIDIA API Key is invalid or expired.';
       } else if (response.status === 401) {
-        errorMessage = 'NVIDIA API authentication failed. Please verify your NIM_API_KEY.';
+        errorMessage = 'NVIDIA API authentication failed.';
       } else if (response.status === 404) {
-        errorMessage = `Model "${nimModel}" not found on NVIDIA API. Check available models at https://build.nvidia.com/explore/discover`;
+        errorMessage = `Model "${nimModel}" not found on NVIDIA API.`;
       } else if (response.status === 429) {
-        errorMessage = 'NVIDIA API rate limit exceeded. Please try again later.';
+        errorMessage = 'NVIDIA API rate limit exceeded.';
       } else if (response.data?.detail) {
         errorMessage = `NVIDIA API error: ${response.data.detail}`;
       }
@@ -162,7 +143,6 @@ app.post('/v1/chat/completions', async (req, res) => {
           message: errorMessage,
           type: 'nvidia_api_error',
           code: response.status,
-          details: response.data,
           attempted_model: nimModel
         }
       });
@@ -170,7 +150,6 @@ app.post('/v1/chat/completions', async (req, res) => {
     
     if (stream) {
       console.log(`📡 Starting streaming response...`);
-      // Handle streaming response
       res.setHeader('Content-Type', 'text/event-stream');
       res.setHeader('Cache-Control', 'no-cache');
       res.setHeader('Connection', 'keep-alive');
@@ -245,17 +224,15 @@ app.post('/v1/chat/completions', async (req, res) => {
       });
     } else {
       console.log(`✅ Non-streaming response successful`);
-      // Transform NIM response to OpenAI format
       const openaiResponse = {
         id: `chatcmpl-${Date.now()}`,
         object: 'chat.completion',
         created: Math.floor(Date.now() / 1000),
-        model: model, // Return the original requested model name
+        model: model,
         system_fingerprint: `nim_${nimModel.replace(/[^a-z0-9]/gi, '_')}`,
         choices: response.data.choices.map(choice => {
           let content = choice.message?.content || '';
           
-          // Handle reasoning content if present
           if (SHOW_REASONING && choice.message?.reasoning_content) {
             content = '<think>\n' + choice.message.reasoning_content + '\n</think>\n\n' + content;
           }
@@ -284,14 +261,20 @@ app.post('/v1/chat/completions', async (req, res) => {
     
     if (error.response) {
       console.error(`Response status: ${error.response.status}`);
-      console.error(`Response data:`, error.response.data);
       
       let errorMessage = error.message;
+      let errorDetails = {};
+      
+      try {
+        errorDetails = typeof error.response.data === 'object' ? error.response.data : { raw: String(error.response.data) };
+      } catch (e) {
+        errorDetails = { parse_error: 'Could not parse error details' };
+      }
       
       if (error.response.status === 403) {
-        errorMessage = 'NVIDIA API returned 403 Forbidden. Your API key may be invalid, expired, or not authorized for this model. Please:\n1. Check your API key at https://build.nvidia.com/\n2. Verify the key in Render environment variables\n3. Try generating a new API key';
+        errorMessage = 'NVIDIA API returned 403 Forbidden. Your API key may be invalid or expired.';
       } else if (error.response.status === 404) {
-        errorMessage = `Model not found. The model you requested may not exist or may not be available in your region. Check https://build.nvidia.com/explore/discover for available models.`;
+        errorMessage = `Model not found. Check https://build.nvidia.com/explore/discover for available models.`;
       }
       
       return res.status(error.response.status).json({
@@ -299,7 +282,7 @@ app.post('/v1/chat/completions', async (req, res) => {
           message: errorMessage,
           type: 'nvidia_api_error',
           code: error.response.status,
-          details: error.response.data
+          details: errorDetails
         }
       });
     }
@@ -314,7 +297,6 @@ app.post('/v1/chat/completions', async (req, res) => {
   }
 });
 
-// Catch-all for unsupported endpoints
 app.all('*', (req, res) => {
   res.status(404).json({
     error: {
