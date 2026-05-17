@@ -20,14 +20,14 @@ const SHOW_REASONING = false; // Set to true to show reasoning with <think> tags
 // 🔥 THINKING MODE TOGGLE - Enables thinking for specific models that support it
 const ENABLE_THINKING_MODE = false; // Set to true to enable chat_template_kwargs thinking parameter
 
-// 🎯 ENHANCED MODEL MAPPING with DeepSeek models
-// You can customize these mappings or add your own!
 const MODEL_MAPPING = {
-  // Direct access
-  'deepseek-v4-pro': 'deepseek-ai/deepseek-v4-pro',
-  'deepseek-v4-flash': 'deepseek-ai/deepseek-v4-flash',
-  'kimi-2.6': 'moonshotai/kimi-2.6',
-  'glm-5.1': 'zai-org/glm-5.1',
+  // ✅ Working DeepSeek V4 models
+  'deepseek-v4-flash': 'deepseek-ai/deepseek-v4-flash',     // Fast & efficient
+  // NOTE: V4 Pro has reported issues, use with caution:
+  'deepseek-v4-pro': 'deepseek-ai/deepseek-v4-pro',         // May have server errors
+  'kimi-k2.6': 'moonshotai/kimi-k2.6',                      // Latest multimodal agentic
+  'glm-5.1': 'z-ai/glm5.1',                                 // Flagship for agentic workflows
+  'gemma-4-31b': 'google/gemma-4-31b-it',                   // Multimodal reasoning, 256K context
   'qwen3-next-80b': 'qwen/qwen3-next-80b-a3b-thinking',
   'qwen3.5-397b': 'qwen/qwen3.5-397b-a17b',
   'step-3.5-flash': 'stepfun/step-3.5-flash',
