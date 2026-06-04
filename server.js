@@ -18,7 +18,7 @@ const MODEL_MAPPING = {
   'deepseek-v4-flash': 'deepseek-ai/deepseek-v4-flash',
   'deepseek-v4-pro': 'deepseek-ai/deepseek-v4-pro',
   'kimi-k2.6': 'moonshotai/kimi-k2.6',
-  'glm-5.1': 'z-ai/glm-5.1',
+  'glm-5.1': 'z-ai/glm5.1',
   'gemma-4-31b': 'google/gemma-4-31b-it',
   'qwen3-next-80b': 'qwen/qwen3-next-80b-a3b-thinking',
   'qwen3.5-397b': 'qwen/qwen3.5-397b-a17b',
@@ -122,7 +122,6 @@ app.post('/v1/chat/completions', async (req, res) => {
     
     if (response.status !== 200) {
       console.error(`❌ NVIDIA API error: ${response.status}`);
-      console.error(`Error details:`, JSON.stringify(response.data));
       
       let errorMessage = 'Unknown error from NVIDIA API';
       
@@ -134,16 +133,27 @@ app.post('/v1/chat/completions', async (req, res) => {
         errorMessage = `Model "${nimModel}" not found on NVIDIA API.`;
       } else if (response.status === 429) {
         errorMessage = 'NVIDIA API rate limit exceeded.';
-      } else if (response.data?.detail) {
-        errorMessage = `NVIDIA API error: ${response.data.detail}`;
+      } else if (response.status === 503) {
+        errorMessage = 'NVIDIA API service temporarily unavailable.';
+      } else if (response.status === 500) {
+        errorMessage = 'NVIDIA API internal error.';
+      } else {
+        try {
+          if (response.data?.detail) {
+            errorMessage = `NVIDIA API error: ${response.data.detail}`;
+          } else if (response.data?.message) {
+            errorMessage = `NVIDIA API error: ${response.data.message}`;
+          }
+        } catch (e) {
+          errorMessage = `NVIDIA API error (status ${response.status})`;
+        }
       }
       
       return res.status(response.status).json({
         error: {
           message: errorMessage,
           type: 'nvidia_api_error',
-          code: response.status,
-          attempted_model: nimModel
+          code: response.status
         }
       });
     }
@@ -263,26 +273,22 @@ app.post('/v1/chat/completions', async (req, res) => {
       console.error(`Response status: ${error.response.status}`);
       
       let errorMessage = error.message;
-      let errorDetails = {};
-      
-      try {
-        errorDetails = typeof error.response.data === 'object' ? error.response.data : { raw: String(error.response.data) };
-      } catch (e) {
-        errorDetails = { parse_error: 'Could not parse error details' };
-      }
       
       if (error.response.status === 403) {
         errorMessage = 'NVIDIA API returned 403 Forbidden. Your API key may be invalid or expired.';
       } else if (error.response.status === 404) {
         errorMessage = `Model not found. Check https://build.nvidia.com/explore/discover for available models.`;
+      } else if (error.response.status === 500) {
+        errorMessage = 'NVIDIA API internal server error.';
+      } else if (error.response.status === 503) {
+        errorMessage = 'NVIDIA API service temporarily unavailable. Try again in a few moments.';
       }
       
       return res.status(error.response.status).json({
         error: {
           message: errorMessage,
           type: 'nvidia_api_error',
-          code: error.response.status,
-          details: errorDetails
+          code: error.response.status
         }
       });
     }
