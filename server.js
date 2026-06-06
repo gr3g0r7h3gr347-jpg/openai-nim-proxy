@@ -22,7 +22,7 @@ const MODEL_MAPPING = {
   'gemma-4-31b': 'google/gemma-4-31b-it',
   'qwen3-next-80b': 'qwen/qwen3-next-80b-a3b-thinking',
   'qwen3.5-397b': 'qwen/qwen3.5-397b-a17b',
-  'step-3.5-flash': 'stepfun-ai/step-3.5-flash',
+  'step-3.7-flash': 'stepfun-ai/step-3.7-flash',
 };
 
 if (!NIM_API_KEY) {
