@@ -20,7 +20,6 @@ const MODEL_MAPPING = {
   'kimi-k2.6': 'moonshotai/kimi-k2.6',
   'glm-5.1': 'z-ai/glm-5.1',
   'gemma-4-31b': 'google/gemma-4-31b-it',
-  'qwen3-next-80b': 'qwen/qwen3-next-80b-a3b-thinking',
   'qwen3.5-397b': 'qwen/qwen3.5-397b-a17b',
   'step-3.7-flash': 'stepfun-ai/step-3.7-flash',
 };
