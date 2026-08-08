@@ -21,6 +21,7 @@ const MODEL_MAPPING = {
   'glm-5.2': 'z-ai/glm-5.2',
   'gemma-4-31b': 'google/gemma-4-31b-it',
   'qwen3.5-397b': 'qwen/qwen3.5-397b-a17b',
+  'minimax-m3': 'minimaxai/minimax-m3',
   'step-3.7-flash': 'stepfun-ai/step-3.7-flash',
 };
 
