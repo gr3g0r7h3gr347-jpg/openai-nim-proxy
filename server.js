@@ -17,10 +17,10 @@ const ENABLE_THINKING_MODE = true;
 const MODEL_MAPPING = {
   'deepseek-v4-flash': 'deepseek-ai/deepseek-v4-flash',
   'deepseek-v4-pro': 'deepseek-ai/deepseek-v4-pro',
-  'kimi-k2.6': 'moonshotai/kimi-k2.6',
   'glm-5.2': 'z-ai/glm-5.2',
   'gemma-4-31b': 'google/gemma-4-31b-it',
-  'qwen3.5-397b': 'qwen/qwen3.5-397b-a17b',
+  'inkling': 'thinkingmachines/inkling',
+  'nemotron-3.5-lightning': 'nvidia/nemotron-3.5-lightning-30b-a3b',
   'minimax-m3': 'minimaxai/minimax-m3',
   'step-3.7-flash': 'stepfun-ai/step-3.7-flash',
 };
