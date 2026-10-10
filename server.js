@@ -15,7 +15,7 @@ const SHOW_REASONING = true;
 const ENABLE_THINKING_MODE = true;
 
 const MODEL_MAPPING = {
-  'deepseek-v4.1-flash': 'deepseek/deepseek-v4.1-flash',
+  'deepseek-v4.1-flash': 'deepseek-ai/deepseek-v4.1-flash',
   'deepseek-v4-pro': 'deepseek-ai/deepseek-v4-pro',
   'glm-5.3': 'z-ai/glm-5.3',
   'gemma-4-31b': 'google/gemma-4-31b-it',
